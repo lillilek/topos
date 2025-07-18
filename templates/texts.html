@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+  <section class="page">
+    <h2>все публикации</h2>
+
+    {% for text in texts %}
+      <article class="text-preview">
+        <h3><a href="/text/{{ text.slug }}">{{ text.title }}</a></h3>
+        <p class="author">
+          {% if text.author_slug %}
+            <a href="/author/{{ text.author_slug }}">{{ text.author }}</a>
+          {% else %}
+            {{ text.author }}
+          {% endif %}
+        </p>
+        <p class="excerpt">{{ text.content[:300]|safe }}...</p>
+      </article>
+    {% endfor %}
+
+    <div class="pagination">
+      {% if page > 1 %}
+        <a href="/texts?page={{ page - 1 }}">← предыдущая</a>
+      {% endif %}
+      <span>страница {{ page }} из {{ total_pages }}</span>
+      {% if page < total_pages %}
+        <a href="/texts?page={{ page + 1 }}">следующая →</a>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}

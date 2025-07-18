@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>топос</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/png">
+</head>
+<body>
+  <header>
+    <div class="logo" onmouseover="showMenu()" onmouseout="hideMenu()">
+      <h1><a href="/">τόπος</a></h1>
+    </div>
+    <div class="main-nav">
+      <a href="/">главная</a>
+      <span class="divider">|</span>
+      <a href="/texts">публикации</a>
+      <span class="divider">|</span>
+      <a href="/authors">авторы</a>
+      <span class="divider">|</span>
+      <a href="/contacts">контакты</a>
+      <span class="divider">|</span>
+      <a href="/donate">поддержать</a>
+    </div>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <p>топос © {{ now.year if now else '2025' }} | посвящается многоликой</p>
+  </footer>
+
+  <script>
+    function showMenu() {
+      document.getElementById('main-nav').style.display = 'block';
+    }
+    function hideMenu() {
+      document.getElementById('main-nav').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+  <section class="page">
+    {% if author.image or author.name or author.bio %}
+  <div class="author-header">
+    {% if author.name %}
+      <h2>{{ author.name }}</h2>
+    {% endif %}
+    {% if author.image %}
+      <img src="{{ author.image }}" alt="{{ author.name }}">
+    {% endif %}
+    {% if author.bio %}
+      <p class="author-bio">{{ author.bio }}</p>
+    {% endif %}
+  </div>
+{% endif %}
+
+
+    {% if author.about %}
+      <div class="author-about">
+        {{ author.about | safe }}
+      </div>
+    {% endif %}
+
+    <h3><b>публикации:</b></h3>
+    <ul>
+      {% for text in texts %}
+        <li><a href="/text/{{ text.slug }}">{{ text.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endblock %}

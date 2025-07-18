@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+  <section class="page">
+    <h2>{{ text.title }}</h2>
+    <p class="author">
+        автор:
+        <a href="/author/{{ text.author_slug }}">{{ text.author }}</a>
+    </p>
+    <div class="text-content">
+      {{ text.content|safe }}
+    </div>
+    <hr>
+    <p style="text-align: center;">
+        <a href="/author/{{ text.author_slug }}">другие тексты автора</a>
+    </p>
+  </section>
+{% endblock %}

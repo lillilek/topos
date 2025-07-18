@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+  <section class="page">
+    <h2>манифест</h2>
+    <p>«топос» — независимый литературный журнал, предназначенный для того, чтобы стать нашим общим местом.  </p>
+  </section>
+
+  <section class="recent">
+    <h2>последние публикации</h2>
+    {% for text in texts %}
+      <article class="text-preview">
+        <h3><a href="/text/{{ text.slug }}">{{ text.title }}</a></h3>
+        <p class="author">
+          {% if text.author_slug %}
+          <a href="/author/{{ text.author_slug }}">{{ text.author }}</a>
+          {% else %}
+          {{ text.author }}
+          {% endif %}
+        </p>
+        <p class="excerpt">{{ text.content[:300]|safe }}...</p>
+      </article>
+    {% endfor %}
+  </section>
+{% endblock %}

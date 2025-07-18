@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+  <section class="page">
+    <h2>все авторы</h2>
+    <div class="author-grid">
+      {% for author in authors %}
+        <a class="author-card" href="/author/{{ author.slug }}">
+          {% if author.image %}
+            <img src="{{ author.image }}" alt="{{ author.name }}">
+          {% endif %}
+          <div class="author-name">{{ author.name }}</div>
+          {% if author.bio %}
+            <div class="author-bio">{{ author.bio }}</div>
+          {% endif %}
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}
