@@ -301,7 +301,7 @@ section.page ul {
 }
 
 .tags {
-  font-size: 0.85rem;  /* чуть меньше основного текста */
-  color: #555;        /* сероватый, необязательно */
+  font-size: 0.85rem;
+  color: #555;
   margin-top: 0.5rem;
 }
