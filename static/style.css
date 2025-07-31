@@ -299,3 +299,9 @@ section.page ul {
   line-height: 1.5;
   margin: 0 0 1rem 0;
 }
+
+.tags {
+  font-size: 0.85rem;  /* чуть меньше основного текста */
+  color: #555;        /* сероватый, необязательно */
+  margin-top: 0.5rem;
+}

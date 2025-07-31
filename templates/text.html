@@ -3,9 +3,12 @@
   <section class="page">
     <h2>{{ text.title }}</h2>
     <p class="author">
-        автор:
         <a href="/author/{{ text.author_slug }}">{{ text.author }}</a>
     </p>
+    {% if text.tags %}
+      <p class="tags">теги: {{ text.tags | join(', ') }}</p>
+    {% endif %}
+
     <div class="text-content">
       {{ text.content|safe }}
     </div>

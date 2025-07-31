@@ -19,6 +19,10 @@
           {% endif %}
         </p>
         <p class="excerpt">{{ text.content[:300]|safe }}...</p>
+        {% if text.tags %}
+          <p class="tags">теги: {{ text.tags | join(', ') }}</p>
+        {% endif %}
+
       </article>
     {% endfor %}
   </section>

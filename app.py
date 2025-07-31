@@ -2,7 +2,7 @@ from flask import Flask, render_template, abort, request
 import os
 import markdown
 import yaml
-from datetime import datetime
+import datetime
 import subprocess
 import hmac
 import hashlib
@@ -35,13 +35,21 @@ def load_all_texts():
                 meta, body = load_markdown_file(path)
                 meta['content'] = body
                 meta['slug'] = os.path.splitext(filename)[0]
+                meta['metatags'] = meta.get('metatags', [])
+                meta['tags'] = meta.get('tags', [])
+
+                if 'date' in meta:
+                    try:
+                        meta['date_obj'] = datetime.datetime.strptime(meta['date'], '%Y-%m-%d').date()
+                    except ValueError:
+                        meta['date_obj'] = datetime.date(1900, 1, 1)  # на всякий случай
+
                 entries.append(meta)
     # sort by date descending
-    entries.sort(key=lambda x: x.get('date', ''), reverse=True)
+    entries.sort(key=lambda x: x.get('date_obj', datetime.date(1900, 1, 1)), reverse=True)
     return entries
 
 def load_authors():
-    import datetime
     from collections import defaultdict
 
     authors = []
@@ -89,7 +97,7 @@ def load_authors():
 
 @app.context_processor
 def inject_now():
-    return {'now': datetime.now()}
+    return {'now': datetime.datetime.now()}
 
 # --- routes ---
 @app.route('/')
@@ -97,16 +105,30 @@ def index():
     texts = load_all_texts()
     return render_template('index.html', texts=texts[:5])
 
-@app.route('/texts')
-def all_texts():
-    texts = load_all_texts()
-    page = int(request.args.get('page', 1))
+@app.route('/metatag/<metatag>')
+def texts_by_metatag(metatag):
+    all_texts = [t for t in load_all_texts() if metatag in t.get('metatags', [])]
+    
+    # --- Pagination ---
+    try:
+        page = int(request.args.get('page', 1))
+    except ValueError:
+        page = 1
+
     per_page = 10
+    total = len(all_texts)
+    total_pages = max((total - 1) // per_page + 1, 1)
     start = (page - 1) * per_page
     end = start + per_page
-    total_pages = (len(texts) + per_page - 1) // per_page
+    texts = all_texts[start:end]
 
-    return render_template('texts.html', texts=texts[start:end], page=page, total_pages=total_pages)
+    return render_template(
+        'texts_by_metatag.html',
+        metatag=metatag,
+        texts=texts,
+        page=page,
+        total_pages=total_pages
+    )
 
 @app.route('/authors')
 def authors():
